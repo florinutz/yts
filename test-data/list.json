@@ -1,0 +1,115 @@
+{
+  "status": "ok",
+  "status_message": "Query was successful",
+  "data": {
+    "movie_count": 31474,
+    "limit": 2,
+    "page_number": 1,
+    "movies": [
+      {
+        "id": 32080,
+        "url": "https:\/\/yts.mx\/movies\/la-via-dei-babbuini-1974",
+        "imdb_code": "tt0144665",
+        "title": "La via dei babbuini",
+        "title_english": "La via dei babbuini",
+        "title_long": "La via dei babbuini (1974)",
+        "slug": "la-via-dei-babbuini-1974",
+        "year": 1974,
+        "rating": 6.8,
+        "runtime": 110,
+        "genres": [
+          "Comedy"
+        ],
+        "summary": "This is a probably underrated brave attempt to build an original story with a peculiar, almost metaphisical torrid African mood. There are good sequences and intuitions though the whole result is pretty cheap. Italian regional comedian Pippo Franco has been used in an unusual and interesting way. Fabio Garriba is very funny and Catherine Spaak gorgeous as usual. It is funny to notice that the great movie by Bertrand Tavernier \"Coup de torchon\" which has more than one point in common with 'La via dei babbuini' has been realised a few years after it.Luigi Magni is a director out of the schemes, usually devoted to films placed in the Roma of the King Popes he directed at least four very good movies:La Tosca, Nell'anno del Signore, Scipione anche detto l'africano, In nome del Papa Re.",
+        "description_full": "This is a probably underrated brave attempt to build an original story with a peculiar, almost metaphisical torrid African mood. There are good sequences and intuitions though the whole result is pretty cheap. Italian regional comedian Pippo Franco has been used in an unusual and interesting way. Fabio Garriba is very funny and Catherine Spaak gorgeous as usual. It is funny to notice that the great movie by Bertrand Tavernier \"Coup de torchon\" which has more than one point in common with 'La via dei babbuini' has been realised a few years after it.Luigi Magni is a director out of the schemes, usually devoted to films placed in the Roma of the King Popes he directed at least four very good movies:La Tosca, Nell'anno del Signore, Scipione anche detto l'africano, In nome del Papa Re.",
+        "synopsis": "This is a probably underrated brave attempt to build an original story with a peculiar, almost metaphisical torrid African mood. There are good sequences and intuitions though the whole result is pretty cheap. Italian regional comedian Pippo Franco has been used in an unusual and interesting way. Fabio Garriba is very funny and Catherine Spaak gorgeous as usual. It is funny to notice that the great movie by Bertrand Tavernier \"Coup de torchon\" which has more than one point in common with 'La via dei babbuini' has been realised a few years after it.Luigi Magni is a director out of the schemes, usually devoted to films placed in the Roma of the King Popes he directed at least four very good movies:La Tosca, Nell'anno del Signore, Scipione anche detto l'africano, In nome del Papa Re.",
+        "yt_trailer_code": "",
+        "language": "it",
+        "mpa_rating": "",
+        "background_image": "https:\/\/yts.mx\/assets\/images\/movies\/la_via_dei_babbuini_1974\/background.jpg",
+        "background_image_original": "https:\/\/yts.mx\/assets\/images\/movies\/la_via_dei_babbuini_1974\/background.jpg",
+        "small_cover_image": "https:\/\/yts.mx\/assets\/images\/movies\/la_via_dei_babbuini_1974\/small-cover.jpg",
+        "medium_cover_image": "https:\/\/yts.mx\/assets\/images\/movies\/la_via_dei_babbuini_1974\/medium-cover.jpg",
+        "large_cover_image": "https:\/\/yts.mx\/assets\/images\/movies\/la_via_dei_babbuini_1974\/large-cover.jpg",
+        "state": "ok",
+        "torrents": [
+          {
+            "url": "https:\/\/yts.mx\/torrent\/download\/673B3BA1335C6D1F5035C086A98676BF6C738276",
+            "hash": "673B3BA1335C6D1F5035C086A98676BF6C738276",
+            "quality": "720p",
+            "type": "web",
+            "seeds": 0,
+            "peers": 0,
+            "size": "958.3 MB",
+            "size_bytes": 1004850381,
+            "date_uploaded": "2021-05-26 15:39:26",
+            "date_uploaded_unix": 1622036366
+          }
+        ],
+        "date_uploaded": "2021-05-26 15:39:26",
+        "date_uploaded_unix": 1622036366
+      },
+      {
+        "id": 32078,
+        "url": "https:\/\/yts.mx\/movies\/the-dating-list-2019",
+        "imdb_code": "tt10053944",
+        "title": "The Dating List",
+        "title_english": "The Dating List",
+        "title_long": "The Dating List (2019)",
+        "slug": "the-dating-list-2019",
+        "year": 2019,
+        "rating": 0,
+        "runtime": 0,
+        "genres": [
+          "Action"
+        ],
+        "summary": "",
+        "description_full": "",
+        "synopsis": "",
+        "yt_trailer_code": "uTFHJCJV7ZA",
+        "language": "en",
+        "mpa_rating": "",
+        "background_image": "https:\/\/yts.mx\/assets\/images\/movies\/the_dating_list_2019\/background.jpg",
+        "background_image_original": "https:\/\/yts.mx\/assets\/images\/movies\/the_dating_list_2019\/background.jpg",
+        "small_cover_image": "https:\/\/yts.mx\/assets\/images\/movies\/the_dating_list_2019\/small-cover.jpg",
+        "medium_cover_image": "https:\/\/yts.mx\/assets\/images\/movies\/the_dating_list_2019\/medium-cover.jpg",
+        "large_cover_image": "https:\/\/yts.mx\/assets\/images\/movies\/the_dating_list_2019\/large-cover.jpg",
+        "state": "ok",
+        "torrents": [
+          {
+            "url": "https:\/\/yts.mx\/torrent\/download\/F7B139D0BC544EAFA67071E7DFECB5024F568068",
+            "hash": "F7B139D0BC544EAFA67071E7DFECB5024F568068",
+            "quality": "720p",
+            "type": "web",
+            "seeds": 0,
+            "peers": 0,
+            "size": "809.91 MB",
+            "size_bytes": 849252188,
+            "date_uploaded": "2021-05-26 15:09:32",
+            "date_uploaded_unix": 1622034572
+          },
+          {
+            "url": "https:\/\/yts.mx\/torrent\/download\/8247D498AB7F38537E99EBF8B1E87943797E49DA",
+            "hash": "8247D498AB7F38537E99EBF8B1E87943797E49DA",
+            "quality": "1080p",
+            "type": "web",
+            "seeds": 0,
+            "peers": 0,
+            "size": "1.47 GB",
+            "size_bytes": 1578400481,
+            "date_uploaded": "2021-05-26 16:06:51",
+            "date_uploaded_unix": 1622038011
+          }
+        ],
+        "date_uploaded": "2021-05-26 15:09:32",
+        "date_uploaded_unix": 1622034572
+      }
+    ]
+  },
+  "@meta": {
+    "server_time": 1622039993,
+    "server_timezone": "CET",
+    "api_version": 2,
+    "execution_time": "0.04 ms"
+  }
+}
