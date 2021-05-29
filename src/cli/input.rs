@@ -68,6 +68,10 @@ pub fn get_list_url(matches: &ArgMatches) -> Url {
         url.query_pairs_mut().append_key_only("with_rt_ratings");
     }
 
+    if let Some(val) = matches.value_of("mirror") {
+        url.set_host(Some(val));
+    }
+
     url
 }
 
@@ -97,5 +101,10 @@ mod tests {
     #[test]
     fn sort() {
         assert_eq!(url_from_cli_input(vec!["-s", "title"]), "https://yts.mx/api/v2/list_movies.json?limit=50&sort_by=title");
+    }
+
+    #[test]
+    fn mirror() {
+        assert_eq!(url_from_cli_input(vec!["--mirror", "yts.ag"]), "https://yts.ag/api/v2/list_movies.json?limit=50");
     }
 }

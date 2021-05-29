@@ -59,6 +59,9 @@ pub fn clap_app() -> App<'static, 'static> {
                     Arg::with_name("with_rotten_tomatoes").long("rt")
                         .help("get rotten tomatoes ratings")
                         .long_help("Return the list with the Rotten Tomatoes rating included"),
+                    Arg::with_name("mirror").takes_value(true).long("mirror").help("domain / mirror to use")
+                        .long_help("will switch the domain to a mirror")
+                        .possible_values(&["yts.mx", "yts.lt", "yts.am", "yts.ag"]).default_value("yts.mx"),
                 ])
         )
 }
