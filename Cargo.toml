@@ -14,3 +14,4 @@ strum = { version = "0.20", features = ["derive", "strum_macros"] }
 reqwest = { version = "0.11.3", features = [ "json", "blocking" ] }
 tokio = { version = "1.6.1", features = [ "full" ] }
 cached-path = "0.5.1"
+colored = "2"

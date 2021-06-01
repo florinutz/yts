@@ -4,13 +4,12 @@ extern crate clap;
 
 use crate::cli::app::clap_app;
 use crate::cli::input::get_list_url;
-use reqwest::Result;
 use crate::cli::output::{write_movies_list, get_list};
 
-#[tokio::main]
-async fn main() -> Result<()> {
+fn main() {
     let matches = clap_app().get_matches();
 
+    // the list subcommand
     if let Some(list_matches) = matches.subcommand_matches("list") {
         let list =
             if list_matches.is_present("response-mock-file") {
@@ -25,6 +24,4 @@ async fn main() -> Result<()> {
 
         write_movies_list(&mut std::io::stdout(), &list).expect("couldn't write movies list");
     }
-
-    Ok(())
 }
