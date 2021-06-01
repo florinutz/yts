@@ -1,5 +1,5 @@
-use strum::{EnumString, EnumVariantNames, Display, EnumIter};
 use clap::ArgMatches;
+use strum::{Display, EnumIter, EnumString, EnumVariantNames};
 use url::Url;
 
 #[derive(Display, Debug, PartialEq, EnumString, EnumVariantNames, EnumIter)]
@@ -78,34 +78,52 @@ pub fn get_list_url(matches: &ArgMatches) -> Url {
 
 #[cfg(test)]
 mod tests {
-    use crate::get_list_url;
     use crate::cli::app::clap_app;
+    use crate::get_list_url;
 
     fn url_from_cli_input(vec: Vec<&str>) -> String {
-        let vec = vec!["yts", "list"].into_iter().chain(vec.into_iter()).collect::<Vec<&str>>();
+        let vec = vec!["yts", "list"]
+            .into_iter()
+            .chain(vec.into_iter())
+            .collect::<Vec<&str>>();
         get_list_url(
-            clap_app().get_matches_from(vec)
-                .subcommand_matches("list").unwrap()
-        ).to_string()
+            clap_app()
+                .get_matches_from(vec)
+                .subcommand_matches("list")
+                .unwrap(),
+        )
+        .to_string()
     }
 
     #[test]
     fn limit() {
-        assert_eq!(url_from_cli_input(vec!["-l", "14", "-p", "13"]), "https://yts.mx/api/v2/list_movies.json?limit=14&page=13");
+        assert_eq!(
+            url_from_cli_input(vec!["-l", "14", "-p", "13"]),
+            "https://yts.mx/api/v2/list_movies.json?limit=14&page=13"
+        );
     }
 
     #[test]
     fn rotten() {
-        assert_eq!(url_from_cli_input(vec!["--rt"]), "https://yts.mx/api/v2/list_movies.json?limit=50&with_rt_ratings");
+        assert_eq!(
+            url_from_cli_input(vec!["--rt"]),
+            "https://yts.mx/api/v2/list_movies.json?limit=50&with_rt_ratings"
+        );
     }
 
     #[test]
     fn sort() {
-        assert_eq!(url_from_cli_input(vec!["-s", "title"]), "https://yts.mx/api/v2/list_movies.json?limit=50&sort_by=title");
+        assert_eq!(
+            url_from_cli_input(vec!["-s", "title"]),
+            "https://yts.mx/api/v2/list_movies.json?limit=50&sort_by=title"
+        );
     }
 
     #[test]
     fn mirror() {
-        assert_eq!(url_from_cli_input(vec!["--mirror", "yts.ag"]), "https://yts.ag/api/v2/list_movies.json?limit=50");
+        assert_eq!(
+            url_from_cli_input(vec!["--mirror", "yts.ag"]),
+            "https://yts.ag/api/v2/list_movies.json?limit=50"
+        );
     }
 }

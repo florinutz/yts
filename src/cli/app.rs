@@ -1,14 +1,8 @@
+use crate::cli::input::{validate_min_rating, validate_natural_one_plus};
 use clap::{
-    App,
-    AppSettings,
+    app_from_crate, crate_authors, crate_description, crate_name, crate_version, App, AppSettings,
     Arg,
-    app_from_crate,
-    crate_name,
-    crate_version,
-    crate_authors,
-    crate_description,
 };
-use crate::cli::input::{validate_natural_one_plus, validate_min_rating};
 
 pub fn clap_app() -> App<'static, 'static> {
     app_from_crate!()

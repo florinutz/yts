@@ -17,39 +17,47 @@ pub struct Item {
 pub fn parse(html: String) -> Vec<Item> {
     let doc = Document::from(html.as_str());
 
-    doc.select(Class("browse-movie-wrap")).map(|node| {
-        let title = match node.select(Class("browse-movie-title")).next() {
-            Some(node) => node.text(),
-            None => "".to_string()
-        };
-        let year = match node.select(Class("browse-movie-year")).next() {
-            Some(node) => node.text().parse::<u16>().unwrap_or(0),
-            None => 0
-        };
-        let img = match node.select(Class("img-responsive")).next() {
-            Some(node) => String::from(node.attr("src").unwrap()),
-            None => "".to_string()
-        };
-        let href = match node.select(Class("browse-movie-link")).next() {
-            Some(node) => node.attr("href").unwrap().to_string(),
-            None => "".to_string()
-        };
-        let rating: f32 = match node.select(Class("rating")).next() {
-            Some(node) => node.text().split_whitespace().next().unwrap_or("0").trim()
-                .parse::<f32>().unwrap_or(0f32),
-            None => 0f32
-        };
+    doc.select(Class("browse-movie-wrap"))
+        .map(|node| {
+            let title = match node.select(Class("browse-movie-title")).next() {
+                Some(node) => node.text(),
+                None => "".to_string(),
+            };
+            let year = match node.select(Class("browse-movie-year")).next() {
+                Some(node) => node.text().parse::<u16>().unwrap_or(0),
+                None => 0,
+            };
+            let img = match node.select(Class("img-responsive")).next() {
+                Some(node) => String::from(node.attr("src").unwrap()),
+                None => "".to_string(),
+            };
+            let href = match node.select(Class("browse-movie-link")).next() {
+                Some(node) => node.attr("href").unwrap().to_string(),
+                None => "".to_string(),
+            };
+            let rating: f32 = match node.select(Class("rating")).next() {
+                Some(node) => node
+                    .text()
+                    .split_whitespace()
+                    .next()
+                    .unwrap_or("0")
+                    .trim()
+                    .parse::<f32>()
+                    .unwrap_or(0f32),
+                None => 0f32,
+            };
 
-        Item {
-            title,
-            year,
-            href,
-            img,
-            rating,
-            quality: "".to_string(), // todo these
-            genres: vec![],
-        }
-    }).collect::<Vec<Item>>()
+            Item {
+                title,
+                year,
+                href,
+                img,
+                rating,
+                quality: "".to_string(), // todo these
+                genres: vec![],
+            }
+        })
+        .collect::<Vec<Item>>()
 }
 
 #[cfg(test)]
