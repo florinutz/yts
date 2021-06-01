@@ -1,7 +1,11 @@
 use chrono::serde::ts_nanoseconds_option;
 use chrono::{DateTime, Utc};
+use colored::Colorize;
+use hyphenation::{Language, Load, Standard};
+use prettytable::{format, Cell, Row, Table};
 use serde::Deserialize;
 use std::fmt::{self};
+use textwrap::{fill, Options as TextWrapOptions};
 use url::Url;
 
 #[derive(Deserialize, Clone, Debug)]
@@ -172,6 +176,58 @@ pub enum MovieDescription {
     Summary,
     Description,
     Synopsis,
+}
+
+impl fmt::Display for ListResponse {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut table = Table::new();
+        table.set_format(*format::consts::FORMAT_NO_COLSEP); // NO_BORDER?
+
+        let data = match &self.data {
+            Some(data) => data,
+            None => {
+                writeln!(f, "missing data from response")?;
+                return Ok(());
+            }
+        };
+
+        let movies = match &data.movies {
+            Some(movies) if !movies.is_empty() => movies,
+            _ => {
+                writeln!(f, "no movies in response")?;
+                return Ok(());
+            }
+        };
+
+        for movie in movies {
+            let left = format!(
+                "{rating}\n\n{year}\n{genres}\n\n{id}",
+                rating = movie.get_rating().as_str().green(),
+                year = movie.get_year().as_str().green(),
+                genres = fill(movie.get_genres().as_str(), 12),
+                id = movie.get_id(),
+            );
+            let right = format!(
+                "{title}\n{url}\n{yt}\n{imdb}\n\n{summary}",
+                title = movie.get_title().as_str().bright_green(),
+                url = movie.get_url(),
+                yt = movie.get_youtube(),
+                imdb = movie.get_imdb(),
+                summary = {
+                    let text = movie.get_text(MovieDescription::Summary);
+                    let dictionary = Standard::from_embedded(Language::EnglishUS).unwrap();
+                    let options = TextWrapOptions::new(90).splitter(dictionary);
+                    fill(text.as_str(), &options)
+                },
+            );
+            let cells = vec![Cell::new(right.as_str()), Cell::new(left.as_str())];
+            table.add_row(Row::new(cells));
+        }
+
+        f.write_fmt(format_args!("{}", table))?;
+
+        Ok(())
+    }
 }
 
 impl fmt::Display for Movie {

@@ -1,10 +1,7 @@
 mod cli;
 
-use crate::cli::{
-    app::clap_app,
-    input::get_list_url,
-    output::{get_list, write_list},
-};
+use crate::cli::{app::clap_app, input::get_list_url};
+use yts::get_list;
 
 fn main() {
     let matches = clap_app().get_matches();
@@ -21,6 +18,6 @@ fn main() {
             get_list(&url).expect("can't get list")
         };
 
-        write_list(&mut std::io::stdout(), &list).expect("couldn't write movies list");
+        println!("{}", &list);
     }
 }
