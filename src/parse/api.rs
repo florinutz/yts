@@ -4,7 +4,7 @@ use chrono::{DateTime, Utc};
 use chrono::serde::ts_nanoseconds_option;
 use std::fmt::{self};
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Debug)]
 #[allow(dead_code)]
 pub struct ListResponse {
     pub status: Option<String>,
@@ -14,7 +14,7 @@ pub struct ListResponse {
     pub meta: Option<Meta>,
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Debug)]
 #[allow(dead_code)]
 pub struct Data {
     pub movie_count: Option<u64>,
@@ -23,7 +23,7 @@ pub struct Data {
     pub movies: Option<Vec<Movie>>,
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Debug)]
 #[allow(dead_code)]
 pub struct Movie {
     pub id: Option<u32>,
@@ -37,7 +37,7 @@ pub struct Movie {
     pub genres: Option<Vec<String>>,
     pub summary: Option<String>,
     pub description_full: Option<String>,
-    pub sypnosis: Option<String>,
+    pub synopsis: Option<String>,
     pub yt_trailer_code: Option<String>,
     pub language: Option<String>,
     pub mpa_rating: Option<String>,
@@ -53,7 +53,7 @@ pub struct Movie {
     pub date_uploaded_unix: Option<DateTime<Utc>>,
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Debug)]
 #[allow(dead_code)]
 pub struct Torrent {
     pub url: Option<Url>,
@@ -70,7 +70,7 @@ pub struct Torrent {
     pub date_uploaded_unix: Option<DateTime<Utc>>,
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Debug)]
 #[allow(dead_code)]
 pub struct Meta {
     #[serde(with = "ts_nanoseconds_option")]
@@ -80,35 +80,109 @@ pub struct Meta {
     pub execution_time: Option<String>,
 }
 
+impl Movie {
+    /// Returns the string representation for the id. It can be empty.
+    pub fn get_id(&self) -> String {
+        match self.id {
+            Some(id) if id > 0 => format!("{}", id),
+            _ => "".to_string(),
+        }
+    }
+
+    /// Returns the string representation for the rating. It can be empty.
+    pub fn get_rating(&self) -> String {
+        match self.rating {
+            Some(rating) if rating > 0.0 => format!("{:.1}", rating),
+            _ => "".to_string(),
+        }
+    }
+
+    /// Returns the string representation for the year. It can be empty.
+    pub fn get_year(&self) -> String {
+        match self.year {
+            Some(year) if year > 0 => format!("{:<4}", year),
+            _ => "".to_string(),
+        }
+    }
+
+    /// Returns the string representation for the title. It can be empty.
+    pub fn get_title(&self) -> String {
+        self.title.to_owned().unwrap_or("???".to_string())
+    }
+
+    /// Returns the string representation for the long title (including year). It can be empty.
+    pub fn get_title_long(&self) -> String {
+        self.title_long.to_owned().unwrap_or("".to_string())
+    }
+
+    /// Returns the string representation for the yts url. It can be empty.
+    pub fn get_url(&self) -> String {
+        match &self.url {
+            Some(url) => url.to_string(),
+            _ => "".to_string(),
+        }
+    }
+
+    /// Returns the string representation for the youtube trailer. It can be empty.
+    pub fn get_youtube(&self) -> String {
+        match &self.yt_trailer_code {
+            Some(trailer_code) if !trailer_code.is_empty() =>
+                format!("https://www.youtube.com/watch?v={}", trailer_code),
+            _ => "".into(),
+        }
+    }
+
+    /// Returns the string representation for the imdb link. It can be empty.
+    pub fn get_imdb(&self) -> String {
+        match &self.imdb_code {
+            Some(imdb) if !imdb.is_empty() =>
+                format!("https://www.imdb.com/title/{}/", imdb),
+            _ => "".into(),
+        }
+    }
+
+    /// Returns the string representation for the movie genres. It can be empty.
+    pub fn get_genres(&self) -> String {
+        match &self.genres {
+            Some(genres) =>
+                format!("{}", genres.
+                    into_iter().
+                    map(|g| g.to_lowercase()).
+                    collect::<Vec<String>>().
+                    join(", ")
+                ),
+            None => "".to_string(),
+        }
+    }
+
+    /// Returns the string representation for the movie summary. It can be empty.
+    pub fn get_text(&self, description_type: MovieDescription) -> String {
+        use MovieDescription::*;
+        match description_type {
+            Summary => self.summary.clone().unwrap_or("".to_string()),
+            Description => self.description_full.clone().unwrap_or("".to_string()),
+            Synopsis => self.synopsis.clone().unwrap_or("".to_string()),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub enum MovieDescription {
+    Summary,
+    Description,
+    Synopsis,
+}
+
 impl fmt::Display for Movie {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{id:<6} {rating} {year} {title} {genres}\n\t{url:60}{youtube}",
-            id=self.id.to_owned().unwrap_or(0),
-            title=self.title.to_owned().unwrap_or("missing title".to_string()),
-            rating=format!("{:<3}", match self.rating {
-                Some(rating) if rating > 0.0 => rating.to_string(),
-                _ => "".to_string(),
-            }),
-            year = match &self.year {
-               Some(year) if *year > 0 => format!("{:<4}", *year),
-               _ => "".to_string(),
-            },
-            url=self.url.to_owned().expect("missing movie url").as_str(),
-            genres = match &self.genres {
-               Some(genres) => format!(
-                   "({})",
-                   genres.
-                       into_iter().
-                       map(|g| g.to_lowercase()).
-                       collect::<Vec<String>>().
-                       join(", ")
-               ),
-               None => "".to_string(),
-            },
-            youtube = match &self.yt_trailer_code {
-                Some(trailer_code) if !trailer_code.is_empty() => format!("\n\thttps://www.youtube.com/watch?v={}", trailer_code),
-                _ => "".into(),
-            }
+               id = self.get_id(),
+               title = self.get_title(),
+               rating = self.get_rating(),
+               year = self.get_year(),
+               url = self.get_url(),
+               genres = self.get_genres(),
+               youtube = self.get_youtube(),
         )
     }
 }

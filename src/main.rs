@@ -1,10 +1,10 @@
 mod cli;
 
-extern crate clap;
-
-use crate::cli::app::clap_app;
-use crate::cli::input::get_list_url;
-use crate::cli::output::{write_movies_list, get_list};
+use crate::cli::{
+    app::clap_app,
+    input::get_list_url,
+    output::{write_list, get_list},
+};
 
 fn main() {
     let matches = clap_app().get_matches();
@@ -22,6 +22,6 @@ fn main() {
                 get_list(&url).expect("can't get list")
             };
 
-        write_movies_list(&mut std::io::stdout(), &list).expect("couldn't write movies list");
+        write_list(&mut std::io::stdout(), &list).expect("couldn't write movies list");
     }
 }
