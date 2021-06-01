@@ -194,12 +194,12 @@ impl fmt::Display for Movie {
 mod tests {
     use crate::parse::api::ListResponse;
     use url::Url;
+    static JSON: &str = include_str!("test-data/list.json");
 
     #[test]
     fn parses_api_list() {
-        let json = std::fs::read_to_string("test-data/list.json").expect("can't read test data");
         let response: ListResponse =
-            serde_json::from_str(json.as_str()).expect("expected a parsed response");
+            serde_json::from_str(JSON).expect("expected a parsed response");
 
         assert_eq!(
             response.status,

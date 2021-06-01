@@ -14,8 +14,8 @@ pub struct Item {
 }
 
 #[allow(dead_code)]
-pub fn parse(html: String) -> Vec<Item> {
-    let doc = Document::from(html.as_str());
+pub fn parse(html: &str) -> Vec<Item> {
+    let doc = Document::from(html);
 
     doc.select(Class("browse-movie-wrap"))
         .map(|node| {
@@ -62,22 +62,12 @@ pub fn parse(html: String) -> Vec<Item> {
 
 #[cfg(test)]
 mod tests {
+    static LIST_HTML: &str = include_str!("test-data/list.html");
+
     #[test]
     fn it_works() {
         use crate::parse::html::parse;
-        let html = std::fs::read_to_string("test-data/list.html").expect("can't read test data");
-        let items = parse(html);
-        // todo move this next block to a command
-        // todo add more tests for parsing
-        // items.iter().for_each(|item| {
-        //     print!("{title} {year} {rating}{href}{img}\n\n",
-        //            title = item.title,
-        //            year = if item.year > 0 { format!("({})", item.year) } else { "".to_string() },
-        //            rating = if item.rating > 0f32 { format!("({:.1} imdb)", item.rating) } else { "".to_string() },
-        //            href = if !item.href.is_empty() { format!("\n\t{}", item.href) } else { "".to_string() },
-        //            img = if !item.img.is_empty() { format!("\n\t{}", item.img) } else { "".to_string() },
-        //     );
-        // });
-        assert_eq!(items.len(), 14)
+        let items = parse(LIST_HTML);
+        assert_eq!(items.len(), 2)
     }
 }
