@@ -29,6 +29,7 @@ pub fn validate_min_rating(msg: String) -> impl Fn(String) -> Result<(), String>
 }
 
 /// Builds an url for the call described here https://yts.mx/api#list_movies
+#[allow(unused_must_use)]
 pub fn get_list_url(matches: &ArgMatches) -> Url {
     let mut url = Url::parse("https://yts.mx/api/v2/list_movies.json").unwrap();
 

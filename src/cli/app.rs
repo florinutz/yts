@@ -62,6 +62,9 @@ pub fn clap_app() -> App<'static, 'static> {
                     Arg::with_name("mirror").takes_value(true).long("mirror").help("domain / mirror to use")
                         .long_help("will switch the domain to a mirror")
                         .possible_values(&["yts.mx", "yts.lt", "yts.am", "yts.ag"]).default_value("yts.mx"),
+                    Arg::with_name("response-mock-file").long("response-mock").short("mock")
+                        .help("does not perform any connection, but uses a local json instead")
+                        .takes_value(true).hidden(true),
                 ])
         )
 }
