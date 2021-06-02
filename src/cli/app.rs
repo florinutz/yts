@@ -12,6 +12,9 @@ pub fn clap_app() -> App<'static, 'static> {
             App::new("list")
                 .about("lists movies")
                 .args(&[
+                    Arg::with_name("search").takes_value(true).help("Search query")
+                        .multiple(true)
+                        .long_help("Search query, matching on: Movie Title/IMDb Code, Actor Name/IMDb Code, Director Name/IMDb Code"),
                     Arg::with_name("limit").short("l").long("limit").takes_value(true)
                         .default_value("50")
                         .help("The limit of results per page that has been set")
@@ -24,9 +27,9 @@ pub fn clap_app() -> App<'static, 'static> {
                         e.g. limit=15 and page=2 will show you movies 15-30\n\
                         Integer (Unsigned)")
                         .validator(validate_natural_one_plus("should be 1 or more".to_string())),
-                    Arg::with_name("quality").long("quality").takes_value(true)
-                        .case_insensitive(true)
-                        .possible_values(&["720p", "1080p", "2160p", "3D"])
+                    Arg::with_name("quality")
+                        .long("quality").short("q").takes_value(true)
+                        .case_insensitive(true).possible_values(&["720p", "1080p", "2160p", "3D"])
                         .help("Filter by a given quality")
                         .long_help("Filter by a given quality\nString (720p, 1080p, 2160p, 3D)"),
                     Arg::with_name("rating")
@@ -34,9 +37,6 @@ pub fn clap_app() -> App<'static, 'static> {
                         .help("Filter movie by a given minimum IMDb rating")
                         .long_help("Filter movie by a given minimum IMDb rating\nInteger between 0 - 9 (inclusive)")
                         .validator(validate_min_rating("this should be an integer between 1 and 9".to_string())),
-                    Arg::with_name("query").takes_value(true).short("q").long("query")
-                        .help("Search query")
-                        .long_help("Search query, matching on: Movie Title/IMDb Code, Actor Name/IMDb Code, Director Name/IMDb Code"),
                     Arg::with_name("genre").takes_value(true).short("g").long("genre")
                         .help("Filter by a given genre")
                         .long_help("Filter by a given genre (See http://www.imdb.com/genre/ for full list)"),

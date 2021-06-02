@@ -1,9 +1,13 @@
 mod cli;
 
 use crate::cli::{app::clap_app, input::get_list_url};
+use log::{debug, error};
+use std::process::exit;
 use yts::get_list;
 
 fn main() {
+    env_logger::init();
+
     let matches = clap_app().get_matches();
 
     // the list subcommand
@@ -15,7 +19,12 @@ fn main() {
             serde_json::from_str(json.as_str()).expect("expected a parsed response")
         } else {
             let url = get_list_url(list_matches);
-            get_list(&url).expect("can't get list")
+            debug!("url: {}", url);
+            get_list(&url).unwrap_or_else(|e| {
+                eprintln!("encountered a problem while retrieving the list");
+                error!("can't retrieve list: {}", e);
+                exit(1);
+            })
         };
 
         println!("{}", &list);

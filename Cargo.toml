@@ -18,3 +18,5 @@ colored = "2"
 prettytable-rs = "^0.8"
 textwrap = { version = "^0.13", features = [ "hyphenation" ] }
 hyphenation = "0.8.0"
+log = "0.4"
+env_logger = "0.8"
