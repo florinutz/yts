@@ -1,18 +1,6 @@
 use clap::ArgMatches;
-use strum::{Display, EnumIter, EnumString, EnumVariantNames};
-use url::Url;
-
-#[derive(Display, Debug, PartialEq, EnumString, EnumVariantNames, EnumIter)]
-pub enum Qualities {
-    #[strum(serialize = "720p")]
-    Q720p,
-    #[strum(serialize = "1080p")]
-    Q1080p,
-    #[strum(serialize = "2160p")]
-    Q2160p,
-    #[strum(serialize = "3D")]
-    Q3D,
-}
+use std::error::Error;
+use yts::request::ListRequest;
 
 pub fn validate_natural_one_plus(msg: String) -> impl Fn(String) -> Result<(), String> {
     move |val| match val.trim().parse::<u16>() {
@@ -28,101 +16,99 @@ pub fn validate_min_rating(msg: String) -> impl Fn(String) -> Result<(), String>
     }
 }
 
-/// Builds an url for the call described here https://yts.mx/api#list_movies
-#[allow(unused_must_use)]
-pub fn get_list_url(matches: &ArgMatches) -> Url {
-    let mut url = Url::parse("https://yts.mx/api/v2/list_movies.json").unwrap();
+pub fn list_req_from_clap<'a>(matches: &'a ArgMatches) -> Result<ListRequest<'a>, Box<dyn Error>> {
+    let mut r = ListRequest::new();
 
-    if let Some(limit) = matches.value_of("limit") {
-        url.query_pairs_mut().append_pair("limit", limit);
+    if let Some(val) = matches.value_of("limit") {
+        r.limit(val.parse()?);
     }
     if let Some(val) = matches.value_of("page") {
-        url.query_pairs_mut().append_pair("page", val);
+        r.page(val.parse()?);
     }
     if let Some(val) = matches.value_of("quality") {
-        url.query_pairs_mut().append_pair("quality", val);
+        r.quality(val.parse()?);
     }
     if let Some(val) = matches.value_of("rating") {
-        url.query_pairs_mut().append_pair("minimum_rating", val);
+        r.rating(val.parse()?);
     }
     if let Some(vals) = matches.values_of("search") {
-        let query: Vec<String> = vals.into_iter().map(|x| x.to_string()).collect();
-        url.query_pairs_mut()
-            .append_pair("query_term", &query.join(" "));
+        let query = vals
+            .into_iter()
+            .map(|x| x.to_string())
+            .collect::<Vec<String>>()
+            .join(" ");
+        r.query_term(query);
     }
     if let Some(val) = matches.value_of("genre") {
-        url.query_pairs_mut().append_pair("genre", val);
+        r.genre(val);
     }
     if let Some(val) = matches.value_of("sort") {
-        url.query_pairs_mut().append_pair("sort_by", val);
+        r.sort_by(val.parse()?);
     }
     if let Some(val) = matches.value_of("order") {
-        url.query_pairs_mut().append_pair("order_by", val);
-    }
-    if matches.is_present("with_rotten_tomatoes") {
-        url.query_pairs_mut().append_key_only("with_rt_ratings");
+        r.order_by(val.parse()?);
     }
     if let Some(val) = matches.value_of("mirror") {
-        url.set_host(Some(val));
+        r.mirror(val)?;
     }
-    url
+    r.wirth_rt_ratings(matches.is_present("with_rotten_tomatoes"));
+
+    Ok(r)
 }
 
 #[cfg(test)]
 mod tests {
     use crate::cli::app::clap_app;
-    use crate::get_list_url;
+    use crate::list_req_from_clap;
 
-    fn url_from_cli_input(vec: Vec<&str>) -> String {
+    fn test_url(vec: Vec<&str>) -> String {
         let actual_vec = &mut vec!["yts", "list"];
         actual_vec.extend(vec);
-        get_list_url(
-            clap_app()
-                .get_matches_from(actual_vec.to_vec())
-                .subcommand_matches("list")
-                .unwrap(),
-        )
-        .to_string()
+        let matches = clap_app().get_matches_from(actual_vec.to_vec());
+        let request = list_req_from_clap(matches.subcommand_matches("list").unwrap())
+            .expect("expected a request");
+        request.url().to_string()
     }
+
     #[test]
     fn limit() {
         assert_eq!(
-            url_from_cli_input(vec!["-l", "14", "-p", "13"]),
+            test_url(vec!["-l", "14", "-p", "13"]),
             "https://yts.mx/api/v2/list_movies.json?limit=14&page=13"
         );
     }
     #[test]
     fn search() {
         assert_eq!(
-            url_from_cli_input(vec!["mama", "are", "mere"]),
+            test_url(vec!["mama", "are", "mere"]),
             "https://yts.mx/api/v2/list_movies.json?limit=50&query_term=mama+are+mere"
         );
     }
     #[test]
     fn rotten() {
         assert_eq!(
-            url_from_cli_input(vec!["--rt"]),
+            test_url(vec!["--rt"]),
             "https://yts.mx/api/v2/list_movies.json?limit=50&with_rt_ratings"
         );
     }
     #[test]
     fn sort() {
         assert_eq!(
-            url_from_cli_input(vec!["--sort", "title"]),
+            test_url(vec!["--sort", "title"]),
             "https://yts.mx/api/v2/list_movies.json?limit=50&sort_by=title"
         );
     }
     #[test]
     fn mirror() {
         assert_eq!(
-            url_from_cli_input(vec!["--mirror", "yts.ag"]),
+            test_url(vec!["--mirror", "yts.ag"]),
             "https://yts.ag/api/v2/list_movies.json?limit=50"
         );
     }
     #[test]
     fn quality() {
         assert_eq!(
-            url_from_cli_input(vec!["--quality", "720p"]),
+            test_url(vec!["--quality", "720p"]),
             "https://yts.mx/api/v2/list_movies.json?limit=50&quality=720p"
         );
     }
