@@ -86,7 +86,7 @@ pub struct Meta {
 
 impl Movie {
     /// Returns the string representation for the id. It can be empty.
-    pub fn get_id(&self) -> String {
+    pub fn id(&self) -> String {
         match self.id {
             Some(id) if id > 0 => format!("{}", id),
             _ => "".to_string(),
@@ -94,7 +94,7 @@ impl Movie {
     }
 
     /// Returns the string representation for the rating. It can be empty.
-    pub fn get_rating(&self) -> String {
+    pub fn rating(&self) -> String {
         match self.rating {
             Some(rating) if rating > 0.0 => format!("{:.1}", rating),
             _ => "".to_string(),
@@ -102,7 +102,7 @@ impl Movie {
     }
 
     /// Returns the string representation for the year. It can be empty.
-    pub fn get_year(&self) -> String {
+    pub fn year(&self) -> String {
         match self.year {
             Some(year) if year > 0 => format!("{:<4}", year),
             _ => "".to_string(),
@@ -110,17 +110,17 @@ impl Movie {
     }
 
     /// Returns the string representation for the title. It can be empty.
-    pub fn get_title(&self) -> String {
+    pub fn title(&self) -> String {
         self.title.to_owned().unwrap_or_else(|| "???".to_string())
     }
 
     /// Returns the string representation for the long title (including year). It can be empty.
-    pub fn get_title_long(&self) -> String {
+    pub fn title_long(&self) -> String {
         self.title_long.to_owned().unwrap_or_else(|| "".to_string())
     }
 
     /// Returns the string representation for the yts url. It can be empty.
-    pub fn get_url(&self) -> String {
+    pub fn url(&self) -> String {
         match &self.url {
             Some(url) => url.to_string(),
             _ => "".to_string(),
@@ -128,7 +128,7 @@ impl Movie {
     }
 
     /// Returns the string representation for the youtube trailer. It can be empty.
-    pub fn get_youtube(&self) -> String {
+    pub fn youtube(&self) -> String {
         match &self.yt_trailer_code {
             Some(trailer_code) if !trailer_code.is_empty() => {
                 format!("https://www.youtube.com/watch?v={}", trailer_code)
@@ -138,7 +138,7 @@ impl Movie {
     }
 
     /// Returns the string representation for the imdb link. It can be empty.
-    pub fn get_imdb(&self) -> String {
+    pub fn imdb(&self) -> String {
         match &self.imdb_code {
             Some(imdb) if !imdb.is_empty() => format!("https://www.imdb.com/title/{}/", imdb),
             _ => "".into(),
@@ -146,7 +146,7 @@ impl Movie {
     }
 
     /// Returns the string representation for the movie genres. It can be empty.
-    pub fn get_genres(&self) -> String {
+    pub fn genres(&self) -> String {
         match &self.genres {
             Some(genres) => genres
                 .iter()
@@ -158,7 +158,7 @@ impl Movie {
     }
 
     /// Returns the string representation for the movie summary. It can be empty.
-    pub fn get_text(&self, description_type: MovieDescription) -> String {
+    pub fn text(&self, description_type: MovieDescription) -> String {
         use MovieDescription::*;
         match description_type {
             Summary => self.summary.clone().unwrap_or_else(|| "".to_string()),
@@ -202,19 +202,19 @@ impl fmt::Display for ListResponse {
         for movie in movies {
             let left = format!(
                 "{rating}\n\n{year}\n{genres}\n\n{id}",
-                rating = movie.get_rating().as_str().green(),
-                year = movie.get_year().as_str().green(),
-                genres = fill(movie.get_genres().as_str(), 12),
-                id = movie.get_id(),
+                rating = movie.rating().as_str().green(),
+                year = movie.year().as_str().green(),
+                genres = fill(movie.genres().as_str(), 12),
+                id = movie.id(),
             );
             let right = format!(
                 "{title}\n{url}\n{yt}\n{imdb}\n\n{summary}",
-                title = movie.get_title().as_str().bright_green(),
-                url = movie.get_url(),
-                yt = movie.get_youtube(),
-                imdb = movie.get_imdb(),
+                title = movie.title().as_str().bright_green(),
+                url = movie.url(),
+                yt = movie.youtube(),
+                imdb = movie.imdb(),
                 summary = {
-                    let text = movie.get_text(MovieDescription::Summary);
+                    let text = movie.text(MovieDescription::Summary);
                     let dictionary = Standard::from_embedded(Language::EnglishUS).unwrap();
                     let options = TextWrapOptions::new(90).splitter(dictionary);
                     fill(text.as_str(), &options)
@@ -235,13 +235,13 @@ impl fmt::Display for Movie {
         write!(
             f,
             "{id:<6} {rating} {year} {title} {genres}\n\t{url:60}{youtube}",
-            id = self.get_id(),
-            title = self.get_title(),
-            rating = self.get_rating(),
-            year = self.get_year(),
-            url = self.get_url(),
-            genres = self.get_genres(),
-            youtube = self.get_youtube(),
+            id = self.id(),
+            title = self.title(),
+            rating = self.rating(),
+            year = self.year(),
+            url = self.url(),
+            genres = self.genres(),
+            youtube = self.youtube(),
         )
     }
 }
