@@ -4,20 +4,62 @@
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+First make sure you have the package manager [cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html) and then
 
 ```bash
-pip install foobar
+cargo install yts
 ```
 
 ## Usage
 
-```python
-import foobar
+```bash
+yts help list
+```
 
-foobar.pluralize('word') # returns 'words'
-foobar.pluralize('goose') # returns 'geese'
-foobar.singularize('phenomena') # returns 'phenomenon'
+```
+USAGE:
+    yts list [FLAGS] [OPTIONS] [search]...
+
+FLAGS:
+    -h, --help
+            Prints help information
+
+    -V, --version
+            Prints version information
+
+        --rt
+            get rotten tomatoes ratings
+
+
+OPTIONS:
+    -g, --genre <genre>
+            Filter by a given genre
+
+    -l, --limit <limit>
+            The limit of results per page that has been set [default: 50]
+
+        --mirror <mirror>
+            domain / mirror to use [default: yts.mx]  [possible values: yts.mx, yts.lt, yts.am, yts.ag]
+
+    -o, --order <order>
+            Order the results ascending or descending [possible values: desc, asc]
+
+    -p, --page <page>
+            The page in the list of movies
+
+    -q, --quality <quality>
+            Filter by a given quality [possible values: 720p, 1080p, 2160p, 3D]
+
+    -r, --rating <rating>
+            Filter movie by a given minimum IMDb rating
+
+    -s, --sort <sort>
+            Sorts the results by a criteria [possible values: title, year, rating, peers, seeds, download_count, like_count, date_added]
+
+
+ARGS:
+    <search>...
+            Search query
 ```
 
 ## Contributing
