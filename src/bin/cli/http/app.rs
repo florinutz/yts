@@ -1,4 +1,4 @@
-use crate::cli::input::{validate_min_rating, validate_natural_one_plus};
+use crate::cli::yts::input::{validate_min_rating, validate_natural_one_plus};
 use clap::{
     app_from_crate, crate_authors, crate_description, crate_name, crate_version, App, AppSettings,
     Arg,
@@ -9,8 +9,8 @@ pub fn clap_app() -> App<'static, 'static> {
         .global_setting(AppSettings::NextLineHelp)
         .global_setting(AppSettings::ColoredHelp)
         .subcommand(
-            App::new("list")
-                .about("lists movies")
+            App::new("serve")
+                .about("serves yts stuff")
                 .args(&[
                     Arg::with_name("search").takes_value(true).help("Search query")
                         .multiple(true)

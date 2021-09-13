@@ -1,6 +1,6 @@
 mod cli;
 
-use crate::cli::{app::clap_app, input::list_req_from_clap};
+use crate::cli::yts::{app::clap_app, input::list_req_from_clap};
 use log::error;
 use std::process::exit;
 use yts::parse::api::ListResponse;
