@@ -58,8 +58,8 @@ pub fn list_req_from_clap<'a>(matches: &'a ArgMatches) -> Result<ListRequest<'a>
 
 #[cfg(test)]
 mod tests {
-    use crate::cli::app::clap_app;
-    use crate::list_req_from_clap;
+    use crate::cli::yts::app::clap_app;
+    use crate::cli::yts::input::list_req_from_clap;
 
     fn test_url(vec: Vec<&str>) -> String {
         let actual_vec = &mut vec!["yts", "list"];
