@@ -77,6 +77,7 @@ mod tests {
             "https://yts.mx/api/v2/list_movies.json?limit=14&page=13"
         );
     }
+
     #[test]
     fn search() {
         assert_eq!(
@@ -84,6 +85,7 @@ mod tests {
             "https://yts.mx/api/v2/list_movies.json?limit=50&query_term=mama+are+mere"
         );
     }
+
     #[test]
     fn rotten() {
         assert_eq!(
@@ -91,6 +93,7 @@ mod tests {
             "https://yts.mx/api/v2/list_movies.json?limit=50&with_rt_ratings"
         );
     }
+
     #[test]
     fn sort() {
         assert_eq!(
@@ -98,6 +101,7 @@ mod tests {
             "https://yts.mx/api/v2/list_movies.json?limit=50&sort_by=title"
         );
     }
+
     #[test]
     fn mirror() {
         assert_eq!(
@@ -105,6 +109,7 @@ mod tests {
             "https://yts.ag/api/v2/list_movies.json?limit=50"
         );
     }
+
     #[test]
     fn quality() {
         assert_eq!(
