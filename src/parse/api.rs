@@ -5,7 +5,7 @@ use hyphenation::{Language, Load, Standard};
 use prettytable::{format, Cell, Row, Table};
 use serde::Deserialize;
 use std::fmt::{self};
-use textwrap::{fill, Options as TextWrapOptions};
+use textwrap::{fill, Options as TextWrapOptions, WordSplitter};
 use url::Url;
 
 #[derive(Deserialize, Clone, Debug)]
@@ -216,7 +216,8 @@ impl fmt::Display for ListResponse {
                 summary = {
                     let text = movie.text(MovieDescription::Summary);
                     let dictionary = Standard::from_embedded(Language::EnglishUS).unwrap();
-                    let options = TextWrapOptions::new(90).splitter(dictionary);
+                    let options = TextWrapOptions::new(90)
+                        .word_splitter(WordSplitter::Hyphenation(dictionary));
                     fill(text.as_str(), &options)
                 },
             );

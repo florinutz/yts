@@ -2,20 +2,6 @@ use clap::ArgMatches;
 use std::error::Error;
 use yts::request::ListRequest;
 
-pub fn validate_natural_one_plus(msg: String) -> impl Fn(String) -> Result<(), String> {
-    move |val| match val.trim().parse::<u16>() {
-        Ok(x) if x > 0 => Ok(()),
-        _ => Err(msg.clone()),
-    }
-}
-
-pub fn validate_min_rating(msg: String) -> impl Fn(String) -> Result<(), String> {
-    move |val| match val.trim().parse::<u8>() {
-        Ok(x) if (1..=9).contains(&x) => Ok(()),
-        _ => Err(msg.clone()),
-    }
-}
-
 pub fn list_req_from_clap<'a>(matches: &'a ArgMatches) -> Result<ListRequest<'a>, Box<dyn Error>> {
     let mut r = ListRequest::new();
 
